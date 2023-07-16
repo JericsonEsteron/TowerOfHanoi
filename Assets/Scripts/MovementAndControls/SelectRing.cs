@@ -9,10 +9,12 @@ public class SelectRing : MonoBehaviour
     private Color _originalColor;
 
     //private bool _isMoveable;
-    public bool IsMoveable { get; set; }
+    //public bool IsMoveable { get; set; }
     [SerializeField] private TowerHandler _currentTower;
     public TowerHandler CurrentTower { get { return _currentTower; } }
 
+    [SerializeField] private int _ringSize;
+    public int RingSize { get { return _ringSize; } }
 
     [SerializeField] private float _moveSpeed = 5;
     public float MoveSpeed { get { return _moveSpeed; } }
@@ -20,6 +22,7 @@ public class SelectRing : MonoBehaviour
     private GameManager _gameManager;
 
     public bool IsSelected { get; set; }
+    public bool IsTopRing { get; set; }
 
     #region Initialize
     private void Start()
@@ -32,7 +35,7 @@ public class SelectRing : MonoBehaviour
         _renderer = GetComponent<MeshRenderer>();
         _originalColor = _renderer.material.color;
         _gameManager = GameManager.instance;
-        IsMoveable = true;
+        //IsMoveable = true;
     }
 
     #endregion
@@ -45,9 +48,11 @@ public class SelectRing : MonoBehaviour
     #region Mouse Callbacks
     private void OnMouseDown()
     {
-        if (!IsMoveable) return;
+        if (!_gameManager.isInteractableOn) return;
+        if (!IsTopRing) return;
         if(IsSelected)
         {
+            _gameManager.ReturnSelectedRing();
             _gameManager.ClearSelectedRing();
         }
         else
@@ -58,7 +63,8 @@ public class SelectRing : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!IsMoveable) return;
+        if (!_gameManager.isInteractableOn) return;
+        if (!IsTopRing) return;
         _renderer.material.color = Color.black;
     }
 

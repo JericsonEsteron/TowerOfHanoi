@@ -131,9 +131,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectedPoint: {fileID: 3636925406870394360}
-  ringsTransform: {fileID: 359082304383038772}
-  ringsPositions: []
-  _gameManager: {fileID: 0}
+  ringsContainerTransform: {fileID: 359082304383038772}
+  ringList: []
+  topRing: {fileID: 0}
 --- !u!136 &4750917862711111900
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -144,10 +144,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.31
+  m_Radius: 0.030352917
   m_Height: 1.4999996
   m_Direction: 1
-  m_Center: {x: -0.00000023841858, y: 0.7499998, z: -0.0000000037252903}
+  m_Center: {x: -0.0000002441897, y: 0.7499998, z: -0.011512582}
 --- !u!1 &8073532157051365999
 GameObject:
   m_ObjectHideFlags: 0
