@@ -84,6 +84,17 @@ public class TowerHandler : MonoBehaviour
         ShowRingList();
     }
 
+    public bool CheckRingsCount(int maxRings)
+    {
+        if(maxRings == ringList.Count)
+        {
+            topRing.IsTopRing = false;
+            return true;
+        }
+
+        return false;
+    }
+
     private void ShowRingList()
     {
         string ringListString = "";

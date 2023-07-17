@@ -24,6 +24,8 @@ public class SelectRing : MonoBehaviour
     public bool IsSelected { get; set; }
     public bool IsTopRing { get; set; }
 
+    [SerializeField] SfxManager _sfx;
+
     #region Initialize
     private void Start()
     {
@@ -45,12 +47,18 @@ public class SelectRing : MonoBehaviour
         _currentTower = tower;
     }
 
+    public void PlayMoveSFX()
+    {
+        _sfx.PlayMoveSFX();
+    }
+
     #region Mouse Callbacks
     private void OnMouseDown()
     {
         if (!_gameManager.isInteractableOn) return;
         if (!IsTopRing) return;
-        if(IsSelected)
+        _sfx.PlayClickSFX();
+        if (IsSelected)
         {
             _gameManager.ReturnSelectedRing();
             _gameManager.ClearSelectedRing();
@@ -65,6 +73,7 @@ public class SelectRing : MonoBehaviour
     {
         if (!_gameManager.isInteractableOn) return;
         if (!IsTopRing) return;
+        _sfx.PlayHoveSFX();
         _renderer.material.color = Color.black;
     }
 

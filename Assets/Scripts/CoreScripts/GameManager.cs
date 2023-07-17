@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GlobalConfig _globalConfig;
     [SerializeField] private TowerHandler _initialTower;
+    [SerializeField] private TowerHandler _lastTower;
 
     [Header("")]
     [SerializeField] private SelectRing _selectedRing;
@@ -19,7 +21,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float _ringPositionOffset = 0.108f;
 
+    [SerializeField] private GameObject _endGamePopUp;
+
     public bool isInteractableOn { get; set; }
+
+    public event Action UpdateMovesCounter;
 
     private void OnEnable()
     {
@@ -93,8 +99,9 @@ public class GameManager : MonoBehaviour
 
     private async Task<bool> MoveSelectedRing(Vector3 newPosition)
     {
-        
+
         //Debug.Log("ON MOVE RING");
+        _selectedRing.PlayMoveSFX();
         while (Vector3.Distance(_selectedRing.transform.localPosition, newPosition) >= 0.01f)
         {
 
@@ -128,6 +135,12 @@ public class GameManager : MonoBehaviour
 
         DeactivateTowers();
         MoveRingToAnotherTowerSequence(anotherTower);
+        
+    }
+
+    private void EndGame()
+    {
+        _endGamePopUp.gameObject.SetActive(true);
     }
 
     private async void MoveRingToAnotherTowerSequence(TowerHandler anotherTower)
@@ -137,7 +150,7 @@ public class GameManager : MonoBehaviour
         _selectedRing.SetCurrentTower(anotherTower);
         _selectedRing.transform.parent = anotherTower.ringsContainerTransform.transform;
         await MoveSelectedRing(anotherTower.SelectedPoint.localPosition);
-        if(anotherTower.topRing != null)
+        if (anotherTower.topRing != null)
         {
             float newRingPositionY = anotherTower.topRing.transform.localPosition.y + _ringPositionOffset;
             Vector3 newRingTransformPosition = new Vector3(
@@ -152,8 +165,14 @@ public class GameManager : MonoBehaviour
 
         isInteractableOn = true;
         anotherTower.ringList.Add(_selectedRing);
-        anotherTower.ChangeTopRing(_selectedRing);   
+        anotherTower.ChangeTopRing(_selectedRing);
+        UpdateMovesCounter?.Invoke();
         ClearSelectedRing();
+
+        bool isGameFinish = _lastTower.CheckRingsCount(_globalConfig.numberOfRings);
+
+        if (isGameFinish)
+            EndGame();
 
     }
 

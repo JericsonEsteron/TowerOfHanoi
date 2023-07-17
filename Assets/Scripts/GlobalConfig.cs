@@ -16,7 +16,7 @@ public class GlobalConfig : ScriptableObject
 
     public void CalculateMinimumMoves()
     {
-        minimumMoves = Mathf.Pow(2, numberOfRings - 1f);
+        minimumMoves = Mathf.Pow(2, numberOfRings) - 1f;
         UpdateMinimumMoves?.Invoke();
     }
 }

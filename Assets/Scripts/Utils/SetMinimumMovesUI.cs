@@ -6,7 +6,7 @@ using System;
 
 public class SetMinimumMovesUI : MonoBehaviour
 {
-    [SerializeField] TMP_Text _minimumMovesText;
+    TMP_Text _minimumMovesText;
     [SerializeField] GlobalConfig _globalConfig;
 
     private void OnEnable()
@@ -21,10 +21,11 @@ public class SetMinimumMovesUI : MonoBehaviour
 
     private void Start()
     {
+        _minimumMovesText = GetComponent<TMP_Text>();
         OnUpdateMinimumMovesUI();
     }
 
-    public void OnUpdateMinimumMovesUI()
+    private void OnUpdateMinimumMovesUI()
     {
         _minimumMovesText.text = _globalConfig.minimumMoves.ToString();
     }
